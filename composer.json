@@ -1,0 +1,13 @@
+{
+	"autoload" : {
+		"psr-4" : {
+			"siohub\\" : "src"
+		}
+	},
+	"name" : "zonesoft/sio-hub",
+	"require" : {
+		"php" : ">=7.4",
+		"monolog/monolog" : "~3.3",
+		"jms/serializer" : "~3.23"
+	}
+}

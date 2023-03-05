@@ -1,0 +1,166 @@
+{
+	"info": {
+		"_postman_id": "3ecf6238-2f4a-43f9-8802-4c09899e6757",
+		"name": "sio-hub",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11302915"
+	},
+	"item": [
+		{
+			"name": "001 - Get All Users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"lastname\": \"Test-LName\",\r\n        \"firstname\": \"Test-FName\",\r\n        \"email\": \"lname.fname@mymail.elsewhere.there\",\r\n        \"username\": \"testuname\",\r\n        \"password\": \"dummy-password-uname\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/siohub/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"siohub",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "005 - Get User By Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/siohub/users/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"siohub",
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "002 - Add New User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"lastname\": \"Test-LName-10\",\r\n        \"firstname\": \"Test-FName-10\",\r\n        \"email\": \"lname.fname.10@mymail.elsewhere.there\",\r\n        \"username\": \"testuname-10\",\r\n        \"password\": \"dummy-password-10\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/siohub/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"siohub",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "003 - Delete User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/siohub/users/16",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"siohub",
+						"users",
+						"16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "004 - Update User",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"id\": 14,\r\n        \"lastname\": \"Buster\",\r\n        \"firstname\": \"Bloxy\",\r\n        \"email\": \"bloxy.buster@bb.here.co.ukd\",\r\n        \"username\": \"testuname-7\",\r\n        \"password\": \"dummy-password-7\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/siohub/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"siohub",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
