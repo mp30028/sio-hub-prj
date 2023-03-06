@@ -24,10 +24,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/siohub/users",
+					"raw": "http://mp30028.com:8081/siohub/users",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"mp30028",
+						"com"
 					],
 					"port": "8081",
 					"path": [
@@ -59,10 +60,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/siohub/users/3",
+					"raw": "http://mp30028.com:8081/siohub/users/3",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"mp30028",
+						"com"
 					],
 					"port": "8081",
 					"path": [
@@ -89,10 +91,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/siohub/users",
+					"raw": "http://mp30028.com:8081/siohub/users",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"mp30028",
+						"com"
 					],
 					"port": "8081",
 					"path": [
@@ -118,16 +121,17 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/siohub/users/16",
+					"raw": "http://mp30028.com:8081/siohub/users/4",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"mp30028",
+						"com"
 					],
 					"port": "8081",
 					"path": [
 						"siohub",
 						"users",
-						"16"
+						"4"
 					]
 				}
 			},
@@ -140,7 +144,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\r\n        \"id\": 14,\r\n        \"lastname\": \"Buster\",\r\n        \"firstname\": \"Bloxy\",\r\n        \"email\": \"bloxy.buster@bb.here.co.ukd\",\r\n        \"username\": \"testuname-7\",\r\n        \"password\": \"dummy-password-7\"\r\n    }",
+					"raw": "    {\r\n        \"id\": 1,\r\n        \"lastname\": \"Buster\",\r\n        \"firstname\": \"Bloxy\",\r\n        \"email\": \"bloxy.buster@bb.here.co.ukd\",\r\n        \"username\": \"testuname-7\",\r\n        \"password\": \"dummy-password-7\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -148,10 +152,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/siohub/users",
+					"raw": "http://mp30028.com:8081/siohub/users",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"mp30028",
+						"com"
 					],
 					"port": "8081",
 					"path": [
