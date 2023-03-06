@@ -6,6 +6,7 @@ USE `sio_hub_db`;
 
 DROP TABLE IF EXISTS `t_user`;
 
+
 CREATE TABLE t_user (
 id int NOT NULL AUTO_INCREMENT,
 lastname VARCHAR(255) NOT NULL,
