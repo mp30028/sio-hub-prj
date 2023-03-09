@@ -1,6 +1,7 @@
 <?php
 namespace siohub\app\controllers;    
-  use siohub\app\utils\AppLogger;
+use Exception;
+use siohub\app\utils\AppLogger;
 
   class FrontController {
     private $appLogger;
@@ -54,8 +55,16 @@ namespace siohub\app\controllers;
     }
     
     private function instantiateController($resourceName){
-        $controllerFactory = 'siohub\\app\\registries\\ControllersRegistry::' . $resourceName . 'Controller';
-        $controllerInstance = call_user_func($controllerFactory);
+        $controllerInstance = NULL;
+        try {
+            $controllerFactory = 'siohub\\app\\registries\\ControllersRegistry::' . $resourceName . 'Controller';
+            $controllerInstance = $controllerFactory();
+        } catch (\Exception|\Throwable $e) {
+            $this->appLogger->writeLog("FROM " . __METHOD__ . ": EXCEPTION THROWN {$e->getMessage()}");
+            $this->appLogger->writeLog("FROM " . __METHOD__ . ": request will be forwarded to HomeController due to the exception");
+            $controllerFactory = 'siohub\\app\\registries\\ControllersRegistry::homeController';
+            $controllerInstance =  $controllerFactory();
+        }
         return $controllerInstance;
     }
     
@@ -74,7 +83,7 @@ namespace siohub\app\controllers;
     
     private function forwardRequest($controllerInstance, $requestMethod, $requestParams, $requestBody){
         $this->appLogger->writeLog("FROM " . __METHOD__ . ": requestMethod=" . $requestMethod . ", requestParams=" . implode("|", $requestParams) . ", requestBody=" . $requestBody);
-        call_user_func_array([$controllerInstance, $requestMethod], [$requestParams, $requestBody]);
+        $controllerInstance->$requestMethod($requestParams, $requestBody);
     }
   } 
   
