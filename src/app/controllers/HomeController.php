@@ -1,5 +1,5 @@
 <?php
-
+namespace siohub\app\controllers; 
 class HomeController{
     private const MESSAGE = 
         array('message' => 'Request reached the application successfully. ' . 

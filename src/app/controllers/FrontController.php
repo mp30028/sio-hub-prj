@@ -6,7 +6,7 @@ namespace siohub\app\controllers;
     private $appLogger;
 
     public function __construct(){
-        $this->appLogger = new AppLogger("FrontController");
+        $this->appLogger = new AppLogger(__CLASS__);
     }
     
     public function handleRequest(){        
@@ -15,7 +15,7 @@ namespace siohub\app\controllers;
         $requestMethod = 'GET';
         $requestParams = [];
         $requesBody = '';
-        $this->appLogger->writeLog("FROM Constructor. AT-START: requestMethod=" . $requestMethod . ", requestParams=[" . implode(" | ", $requestParams) . "]");
+        $this->appLogger->writeLog("FROM " . __METHOD__ . ". AT-START: requestMethod=" . $requestMethod . ", requestParams=[" . implode(" | ", $requestParams) . "]");
         $requestMethod = $this->extractHttpMethod();
         $parsedUrl = $this->parseUrl();
         $requestedResourceName = $this->extractResourceName($parsedUrl);
@@ -23,7 +23,7 @@ namespace siohub\app\controllers;
         $requestParams = $this->extractUrlParameters($parsedUrl);
         $requesBody = $this->extractBody();
         $this->forwardRequest($controllerInstance, $requestMethod, $requestParams, $requesBody);
-        $this->appLogger->writeLog("FROM Constructor. AT-END: requestMethod=" . $requestMethod . ", requestParams=[" . implode(" | ", $requestParams) . "]");        
+        $this->appLogger->writeLog("FROM " . __METHOD__ . ". AT-END: requestMethod=" . $requestMethod . ", requestParams=[" . implode(" | ", $requestParams) . "]");        
     }
 
     private function extractHttpMethod(){
@@ -54,16 +54,16 @@ namespace siohub\app\controllers;
     }
     
     private function instantiateController($resourceName){
-        $controllerFactory = 'siohub\\app\\registries\\CoreRegistry::' . $resourceName . 'Controller';
+        $controllerFactory = 'siohub\\app\\registries\\ControllersRegistry::' . $resourceName . 'Controller';
         $controllerInstance = call_user_func($controllerFactory);
         return $controllerInstance;
     }
     
     private function extractUrlParameters($parsedUrl){
-        $this->appLogger->writeLog("FROM extractUrlParameters: parsedUrl = " . implode("|", $parsedUrl));
+        $this->appLogger->writeLog("FROM " . __METHOD__ . ": parsedUrl = " . implode("|", $parsedUrl));
         $params = $parsedUrl ? array_values($parsedUrl) : [];
-        $this->appLogger->writeLog("FROM extractUrlParameters: params = " . implode("|", $params));
-        $this->appLogger->writeLog("FROM extractUrlParameters: params-is-array = " . is_array($params) );
+        $this->appLogger->writeLog("FROM " . __METHOD__ . ": params = " . implode("|", $params));
+        $this->appLogger->writeLog("FROM " . __METHOD__ . ": params-is-array = " . is_array($params) );
         return $params;
     }
     
@@ -73,7 +73,7 @@ namespace siohub\app\controllers;
     }
     
     private function forwardRequest($controllerInstance, $requestMethod, $requestParams, $requestBody){
-        $this->appLogger->writeLog("FROM forwardRequest: requestMethod=" . $requestMethod . ", requestParams=" . implode("|", $requestParams) . ", requestBody=" . $requestBody);
+        $this->appLogger->writeLog("FROM " . __METHOD__ . ": requestMethod=" . $requestMethod . ", requestParams=" . implode("|", $requestParams) . ", requestBody=" . $requestBody);
         call_user_func_array([$controllerInstance, $requestMethod], [$requestParams, $requestBody]);
     }
   } 

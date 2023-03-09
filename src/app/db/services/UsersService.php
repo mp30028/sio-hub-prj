@@ -4,7 +4,8 @@ use PDO as PDO;
 use JMS\Serializer\SerializerBuilder as SerializerBuilder;
 use siohub\app\entities\User;
 use siohub\app\utils\AppLogger;
-require(__DIR__ . "/../../entities/User.php");
+// use siohub\app\registries\DataServicesRegistry;
+require_once (__DIR__ . "/../../entities/User.php");
 
 
 class UsersService{
@@ -14,11 +15,10 @@ class UsersService{
     private const ADD_NEW_QUERY = "INSERT INTO t_user(lastname, firstname, email, username, password) VALUES (:lastname, :firstname, :email, :username, :password)";
     private const DELETE_QUERY = "DELETE FROM t_user WHERE id = :id";
     private const UPDATE_QUERY = "UPDATE t_user SET lastname = :lastname, firstname = :firstname, email = :email, username = :username, password = :password  WHERE id = :id";
-    private $connection;
-    private $isTimedEventRunning;
-    private $shouldTimedEventRun;
+    private PDO $connection;
+
     
-    public function __construct($connection){
+    public function __construct(PDO $connection){
         $this->appLogger = new AppLogger("UsersService");
         $this->isTimedEventRunning = false;
         $this->connection = $connection;
@@ -32,7 +32,7 @@ class UsersService{
         return $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, get_class($user));
     }
     
-    public function findById($userId){
+    public function findById(int $userId) : User{
         $this->appLogger->writeLog("FROM findById: userId =" . $userId);
         $user = new User();
         $statement = $this->connection->prepare(UsersService::FIND_BY_ID_QUERY);
@@ -42,7 +42,7 @@ class UsersService{
         return $statement->fetch();
     }
     
-    public function add($userJson){
+    public function add(string $userJson) : User{
         $serializer = SerializerBuilder::create()->build();
         $user = new User();
         $user = $serializer->deserialize($userJson, get_class($user), 'json');
@@ -59,7 +59,7 @@ class UsersService{
         return $user;
     }
     
-    public function delete($userId){
+    public function delete(int $userId) : bool{
         $this->appLogger->writeLog("user-id of user to be deleted = " . $userId);
         $statement = $this->connection->prepare(UsersService::DELETE_QUERY);
         $statement->bindParam('id', $userId, PDO::PARAM_INT);
@@ -67,7 +67,7 @@ class UsersService{
         return TRUE;
     }
     
-    public function update($userJson){
+    public function update(string $userJson) : User{
         $serializer = SerializerBuilder::create()->build();
         $user = new User();
         $user = $serializer->deserialize($userJson, get_class($user), 'json');
@@ -82,69 +82,5 @@ class UsersService{
         return $user;
     }
     
-//     public function raiseTimedEvents(bool $shouldRun){
-//         if ($this->shouldRun != $shouldRun ){
-//             $this->shouldRun = $shouldRun;
-//         }
-//         $this->shouldRun = $shouldRun;
-        
-//     }
-    
-//     public function timedEvents($shouldRun){
-//         $this->shouldTimedEventRun = $shouldRun;
-//         if ($shouldRun){
-//             if ($this->isTimedEventRunning == FALSE){
-//                 startTimedEvents();
-//             }
-//         }
-//     }
-    
-//     private function startTimedEvent(){
-//             $pid = pcntl_fork();
-//             if ($pid == -1) {
-//                 die('could not fork');
-//             } else if ($pid) {
-//                 // we are the parent, do nothing
-//             } else {                
-//                 $controller  = new UsersController($usersService);                
-//                 while ($this->shouldTimedEventRun){
-//                     $this->isTimedEventRunning = TRUE;
-//                     $time = date('r');
-//                     $message = "FROM sendTimedEvents: Event raised at {$time}";
-//                     $this->appLogger->writeLog($message);
-//                     call_user_func_array([$controller, "streamEvents"], [$message]);
-//                     sleep(2);
-//                 }
-//                 $this->isTimedEventRunning = FALSE;
-//             }
-//     }
-        
-
-        
-        
-        
-        
-//         // Set file mime type event-stream
-//         header('Content-Type: text/event-stream');
-//         header('Cache-Control: no-cache');
-        
-        // Loop until the client close the stream
-//         $controller = new \UsersController();
-//         while ($this->shouldRun) {
-            
-//             // Echo time
-//             $time = date('r');
-// //             echo "data: The server time is: {$time}\n\n";
-//             $message = "FROM sendTimedEvents: Event raised at {$time}";
-//             $this->appLogger->writeLog($message);
-//             call_user_func_array([$controller, "streamEvents"], [$message]);
-            
-//             // Flush buffer (force sending data to client)
-// //             flush();
-            
-//             // Wait 2 seconds for the next message / event
-//             sleep(2);
-//         }
-//     }
 }
 

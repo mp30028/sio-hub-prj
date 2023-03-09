@@ -3,13 +3,14 @@ namespace siohub\app\controllers;
 
 require_once (__DIR__ ."/../utils/AppLogger.php");
 use siohub\app\utils\AppLogger;
+use siohub\app\db\services\UsersService;
 
 class UsersController{
-     private $appLogger;
-     private $usersService;
+     private AppLogger $appLogger;
+     private UsersService $usersService;
     
      public function __construct($usersService){
-        $this->appLogger = new AppLogger("UsersController");
+        $this->appLogger = new AppLogger(__CLASS__);
         $this->usersService = $usersService;
     }
     
@@ -19,15 +20,7 @@ class UsersController{
         $this->appLogger->writeLog("FROM GET: params=" . implode("|", $params));
         $this->appLogger->writeLog("FROM GET: body=" . $body);        
         if (isset($params[1])){
-            if ($params[1] == "persistence-events"){
-                $shouldRun = TRUE;
-//                 if(isset($params[2])){
-//                     $shouldRun = $params[2];
-//                 }
-                $this->usersService->timedEvents($shouldRun);
-            }else{
-                echo json_encode($this->usersService->findById($params[1]));
-            }
+            echo json_encode($this->usersService->findById($params[1]));
         }else{
             echo json_encode($this->usersService->findAll());
         }
