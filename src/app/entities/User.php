@@ -11,7 +11,7 @@ class User{
     public string $username;
     public string $password;
     
-    function __construct($id=Constants::UNDEFINED_ENTITY_ID, $lastname="not-set", $firstname="not-set", $email="not-set", $username="not-set", $password="not-set") {
+    function __construct(int $id=Constants::UNDEFINED_ENTITY_ID, string $lastname="", string $firstname="", string $email="", string $username="", string $password="") {
         $this->id = $id;
         $this->lastname = $lastname;
         $this->firstname = $firstname;

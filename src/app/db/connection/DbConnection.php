@@ -1,18 +1,19 @@
-<?php
+<?php 
+
 namespace siohub\app\db\connection;
 
 use PDO as PDO;
 use PDOException;
 
-class DbConnection{
+class DbConnection{    
 //     public $host = '127.0.0.1';
-    public $host = '172.17.0.2';
-    public $schema   = 'sio_hub_db';
-    public $username = 'sio-hub-app';
-    public $password = 'P^ssWord*0009';
-    public $charset = 'utf8mb4';       
+    public string $host = '172.17.0.2';
+    public string $schema   = 'sio_hub_db';
+    public string $username = 'sio-hub-app';
+    public string $password = 'P^ssWord*0009';
+    public string $charset = 'utf8mb4';       
     
-    private function getConnectionString(){
+    private function getConnectionString() : string{
         $connectionString = "mysql:host=$this->host;dbname=$this->schema;charset=$this->charset;port=3306";
         return $connectionString;
     }
@@ -23,11 +24,7 @@ class DbConnection{
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
     
-//     public function getConnectionWithDefaultCredentials(){
-//         return $this->getConnection($this->username, $this->password);
-//     }
-    
-    public function getConnection(){
+    public function getConnection() : PDO{
         try {
             $pdo = new PDO($this->getConnectionString(), $this->username, $this->password, $this->options);
             return $pdo;

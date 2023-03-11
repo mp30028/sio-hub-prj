@@ -8,6 +8,8 @@
 	"require" : {
 		"php" : ">=7.4",
 		"monolog/monolog" : "~3.3",
-		"jms/serializer" : "~3.23"
+		"jms/serializer" : "~3.23",
+		"cboden/ratchet" : "~0.4",
+		"react/http" : "^1.8"
 	}
 }
