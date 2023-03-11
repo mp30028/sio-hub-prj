@@ -1,7 +1,9 @@
 <?php
-namespace siohub\app\controllers;    
+namespace siohub\app\controllers;
+require_once (__DIR__ ."/OptionsController.php");
 use Exception;
 use siohub\app\utils\AppLogger;
+
 
   class FrontController {
     private $appLogger;
@@ -18,6 +20,9 @@ use siohub\app\utils\AppLogger;
         $requesBody = '';
         $this->appLogger->writeLog("FROM " . __METHOD__ . ". AT-START: requestMethod=" . $requestMethod . ", requestParams=[" . implode(" | ", $requestParams) . "]");
         $requestMethod = $this->extractHttpMethod();
+        if ($requestMethod === "OPTIONS"){
+            return \OptionsController::getResponse();            
+        }
         $parsedUrl = $this->parseUrl();
         $requestedResourceName = $this->extractResourceName($parsedUrl);
         $controllerInstance = $this->instantiateController($requestedResourceName);
