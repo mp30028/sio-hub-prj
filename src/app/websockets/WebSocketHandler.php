@@ -42,6 +42,7 @@ class WebSocketHandler implements MessageComponentInterface{
     }
     
     public function sendMessage(string $message){
+        $this->appLogger->writeLog("FROM " . __METHOD__ . ": The message, \" {$message} \", was received for broadcast");
         $clientIds = "";
         foreach ($this->clients as $client) {            
             $client->send($message);

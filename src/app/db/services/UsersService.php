@@ -4,6 +4,9 @@ use PDO as PDO;
 use JMS\Serializer\SerializerBuilder as SerializerBuilder;
 use siohub\app\entities\User;
 use siohub\app\utils\AppLogger;
+use siohub\app\db\events\DbEvent;
+// use siohub\app\websockets\WebSocketServer;
+use siohub\app\registries\WebSocketsRegistry;
 // use siohub\app\registries\DataServicesRegistry;
 require_once (__DIR__ . "/../../entities/User.php");
 
@@ -29,7 +32,10 @@ class UsersService{
         $statement = $this->connection->query(UsersService::FIND_ALL_QUERY);
         $statement->setFetchMode(PDO::FETCH_INTO, $user);        
         $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, get_class($user));
+        $fetchResult = $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, get_class($user));
+//         $event = new DbEvent(uniqid(),DbEvent::READ,$fetchResult);
+//         WebSocketsRegistry::webSocketHttpClient()->sendMessage(json_encode($event));
+        return $fetchResult;
     }
     
     public function findById(int $userId) : User{
@@ -39,7 +45,10 @@ class UsersService{
         $statement->bindParam('id', $userId, PDO::PARAM_INT);
         $statement->setFetchMode(PDO::FETCH_INTO, $user);
         $statement->execute();
-        return $statement->fetch();
+        $fetchResult = $statement->fetch();
+//         $event = new DbEvent(uniqid(),DbEvent::READ,[$fetchResult]);
+//         WebSocketsRegistry::webSocketHttpClient()->sendMessage(json_encode($event));
+        return $fetchResult;
     }
     
     public function add(string $userJson) : User{
@@ -56,14 +65,19 @@ class UsersService{
         $newId = $this->connection->lastInsertId();
         $user->id = $newId;
         $this->appLogger->writeLog("inserted user = " . json_encode($user));
+        $event = new DbEvent(uniqid(),DbEvent::CREATE,[$user]);
+        WebSocketsRegistry::webSocketHttpClient()->sendMessage(json_encode($event));
         return $user;
     }
     
     public function delete(int $userId) : bool{
+        $user = $this->findById($userId);
         $this->appLogger->writeLog("user-id of user to be deleted = " . $userId);
         $statement = $this->connection->prepare(UsersService::DELETE_QUERY);
         $statement->bindParam('id', $userId, PDO::PARAM_INT);
         $statement->execute();
+        $event = new DbEvent(uniqid(),DbEvent::DELETE,[$user]);
+        WebSocketsRegistry::webSocketHttpClient()->sendMessage(json_encode($event));
         return TRUE;
     }
     
@@ -79,6 +93,8 @@ class UsersService{
         $statement->bindParam('username', $user->username, PDO::PARAM_STR);
         $statement->bindParam('password', $user->password, PDO::PARAM_STR);
         $statement->execute();
+        $event = new DbEvent(uniqid(),DbEvent::UPDATE,[$user]);
+        WebSocketsRegistry::webSocketHttpClient()->sendMessage(json_encode($event));
         return $user;
     }
     
