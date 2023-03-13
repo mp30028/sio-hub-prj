@@ -1,16 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import * as DataService from "../services/DataServices";
 
 export function UserEditor(props) {
+	const emptyUser = {id: "", firstname: "", lastname: "", email: "", username: "", password: ""};
+		
+	const [user, setUser] = useState(emptyUser);
+	const [saveButtonValue, setSaveButtonValue] = useState("SAVE_NEW");
 	
+	useEffect(() => {	
+		setUser(props.user);
+		setSaveButtonValue("SAVE_UPDATE");
+	}, [props]);
+		
 	const handleChange = (event) => {
-		event.preventDefault();
+//		console.log("event=", event);
+		event.preventDefault();		
 		const {name, value} = event.target;
-		props.onChange({event:event, name:name, value: value});
+		const userCopy = { ...user };
+		userCopy[name] = value;
+		setUser(userCopy);
 	}
 	
 	const handleSubmit = (event) =>{
+		event.preventDefault();	
 		const {name, value} = event.target;
-		props.onSubmit({event, name, value});
+		console.log("FROM UserEditor.handleSubmit: button name=", name, ", value=", value);
+		if (value === "SAVE_UPDATE" ){
+			DataService.doUpdate(user);
+			setUser(emptyUser);
+		}else if (value === "SAVE_NEW" ){
+			DataService.doCreate(user);
+			setUser(emptyUser);
+		}else if (value === "DELETE" ){
+			DataService.doDelete(user);
+			setUser(emptyUser);
+		}else if (value === "CREATE" ){
+			setUser(emptyUser);
+			setSaveButtonValue("SAVE_NEW");			
+		}		
 	}
 	
 	return (
@@ -20,34 +47,34 @@ export function UserEditor(props) {
 					<tr>
 						<th>ID</th>
 						<td>
-							<input type="text" name="userId" id={props.user.id} value={props.user.id} readOnly style={{width:"90%" }} />
+							<input type="text" name="userId" id="userId" value={user.id} readOnly style={{width:"90%" }} />
 						</td>
 					</tr>
 					<tr>
 						<th>Firstname</th>
-						<td><input type="text" name="firstname" id={props.user.id} value={props.user.firstname} onChange={handleChange} /></td>
+						<td><input type="text" name="firstname" id="firstname" value={user.firstname} onChange={handleChange} style={{width:"90%" }}/></td>
 					</tr>
 					<tr>
 						<th>Lastname</th>
-						<td><input type="text" name="lastname" id={props.user.id} value={props.user.lastname} onChange={handleChange} /></td>
+						<td><input type="text" name="lastname" id="lastname" value={user.lastname} onChange={handleChange} style={{width:"90%" }}/></td>
 					</tr>
 					<tr>
 						<th>Email</th>
-						<td><input type="text" name="lastname" id={props.user.id} value={props.user.email} onChange={handleChange} /></td>
+						<td><input type="text" name="email" id="email" value={user.email} onChange={handleChange} style={{width:"90%" }}/></td>
 					</tr>
 					<tr>
 						<th>Username</th>
-						<td><input type="text" name="lastname" id={props.user.id} value={props.user.username} onChange={handleChange} /></td>
+						<td><input type="text" name="username" id="username" value={user.username} onChange={handleChange} style={{width:"90%" }}/></td>
 					</tr>
 					<tr>
 						<th>Password</th>
-						<td><input type="text" name="lastname" id={props.user.id} value={props.user.password} onChange={handleChange} /></td>
+						<td><input type="text" name="password" id="password" value={user.password} onChange={handleChange} style={{width:"90%" }}/></td>
 					</tr>
 					<tr>
 						<td colSpan="2" style={{textAlign:"right"}}>
 							<button type="submit" onClick={handleSubmit} name="submit" value="CREATE">Add New</button>
 							<button type="submit" onClick={handleSubmit} name="submit" value="DELETE">Delete</button>
-							<button type="submit" onClick={handleSubmit} name="submit" value="UPDATE">Save</button>					
+							<button type="submit" onClick={handleSubmit} name="submit" value={saveButtonValue}>Save</button>					
 							<button type="submit" onClick={handleSubmit} name="submit" value="CANCEL">Cancel</button>
 						</td>
 					</tr>
