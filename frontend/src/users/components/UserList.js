@@ -4,6 +4,7 @@ import * as ListenerService from "../services/ListenerService";
 import * as DataHandler from "../services/DataHandler";
 
 function List(props){
+	const selectedRecordRef = useRef(null);
 	const usersRef = useRef([]);
 	const [users, setUsers]= useState([]);
 	const [selectedRecord, setSelectedRecord]= useState(null);
@@ -20,7 +21,7 @@ function List(props){
 			}else if(eventData.eventType === "CREATE"){
 				updatedData = DataHandler.doCreate(usersRef.current, eventData.data);
 			};
-			setUsers(updatedData);
+			setUsers(updatedData);			
 		};		
 		DataServices.fetchAll().then((data) => setUsers(data));
 		ListenerService.setupEventSource(onmessageHandler);
@@ -28,10 +29,14 @@ function List(props){
 
 	useEffect(() => {
 		if (props.selectionHandler) props.selectionHandler(selectedRecord);
+		selectedRecordRef.current = selectedRecord;
 	}, [selectedRecord, props]);
 
 	useEffect(() => {
 		usersRef.current = users;
+		if(usersRef.current && selectedRecordRef.current){
+			setSelectedRecord(usersRef.current.find((u) => u.id === selectedRecordRef.current.id));
+		}
 	},[users]);	
 	
 	const selectById = (id) =>{
