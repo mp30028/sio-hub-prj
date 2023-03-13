@@ -13,7 +13,7 @@ function List(props){
 			var eventData = JSON.parse(event.data);
 			var updatedData = null;
 			console.log("eventData=",eventData);
-			if(eventData.eventType === "UPDATE"){				
+			if(eventData.eventType === "UPDATE"){
 				updatedData = DataHandler.doUpdate(usersRef.current, eventData.data);
 			}else if(eventData.eventType === "DELETE"){
 				updatedData = DataHandler.doDelete(usersRef.current, eventData.data);
@@ -27,7 +27,7 @@ function List(props){
 	}, [setUsers]);
 
 	useEffect(() => {
-		if (props.selectionHandler) props.selectionHandler(selectedRecord);		
+		if (props.selectionHandler) props.selectionHandler(selectedRecord);
 	}, [selectedRecord, props]);
 
 	useEffect(() => {
